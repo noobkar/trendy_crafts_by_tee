@@ -41,7 +41,7 @@ function App() {
         pointerEvents: 'none',
         fontWeight: 500
       }}>
-        developed by amjid_afri & amo_u with love ❤️
+        developed by <a href="https://instagram.com/amjid_afri" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none', fontWeight: 'bold' }}>@amjid_afri</a> & <a href="https://instagram.com/amo_u" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none', fontWeight: 'bold' }}>@amo_u</a> with love ❤️
       </div>
     </CartProvider>
   );
