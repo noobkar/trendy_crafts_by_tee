@@ -43,6 +43,16 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="flex-center" style={{ gap: '12px', zIndex: 1001 }}>
             <img src={logo} alt="Trendy Crafts" style={{ height: '50px', width: 'auto' }} />
+            <span style={{
+              fontFamily: 'Playfair Display, serif',
+              fontSize: '1.5rem',
+              fontWeight: 600,
+              color: 'var(--color-primary)',
+              fontStyle: 'italic',
+              letterSpacing: '0.5px'
+            }}>
+              Trendy Crafts by Tee
+            </span>
           </Link>
 
           {/* Desktop Menu */}
