@@ -43,19 +43,20 @@ const Checkout = () => {
             setStatus('success');
             clearCart();
         } else {
-            console.error(result.error);
+            console.error("EmailJS failed:", result.error);
+            // Graceful fallback to mailto
             setStatus('error');
-            // Fallback to mailto
+
+            let itemsList = cartItems.map(item => `- ${item.title} (x${item.quantity}): $${(item.price * item.quantity).toFixed(2)}`).join('%0D%0A');
+            const total = getCartTotal().toFixed(2);
+
+            const subject = `New Order from ${formData.name}`;
+            const body = `ORDER DETAILS:%0D%0A----------------%0D%0A${itemsList}%0D%0A----------------%0D%0ATOTAL: $${total}%0D%0A%0D%0ACUSTOMER INFO:%0D%0AName: ${formData.name}%0D%0AEmail: ${formData.email}%0D%0AAddress: ${formData.address}, ${formData.city}%0D%0AInstructions: ${formData.instructions}`;
+
+            // Small delay to allow UI update then open mail
             setTimeout(() => {
-                alert("Email service is not fully configured yet. Opening your default mail app instead.");
-                let itemsList = cartItems.map(item => `- ${item.title} (x${item.quantity}): $${(item.price * item.quantity).toFixed(2)}`).join('%0D%0A');
-                const total = getCartTotal().toFixed(2);
-
-                const subject = `New Order from ${formData.name}`;
-                const body = `ORDER DETAILS:%0D%0A----------------%0D%0A${itemsList}%0D%0A----------------%0D%0ATOTAL: $${total}%0D%0A%0D%0ACUSTOMER INFO:%0D%0AName: ${formData.name}%0D%0AEmail: ${formData.email}%0D%0AAddress: ${formData.address}, ${formData.city}%0D%0AInstructions: ${formData.instructions}`;
-
                 window.location.href = `mailto:aneestaqa@gmail.com?subject=${encodeURIComponent(subject)}&body=${body}`;
-            }, 1000);
+            }, 500);
         }
     };
 
@@ -199,8 +200,8 @@ const Checkout = () => {
                             </div>
 
                             {status === 'error' && (
-                                <div style={{ padding: '10px', background: '#f8d7da', color: '#721c24', borderRadius: '8px', textAlign: 'center' }}>
-                                    Failed to send automatically. Opening mail app...
+                                <div style={{ padding: '10px', background: '#fff3cd', color: '#856404', borderRadius: '8px', textAlign: 'center', marginBottom: '1rem' }}>
+                                    Opening your email app to complete the order...
                                 </div>
                             )}
 

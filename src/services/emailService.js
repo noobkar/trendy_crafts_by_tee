@@ -1,12 +1,14 @@
 import emailjs from '@emailjs/browser';
 
-// Placeholder keys - User needs to replace these
+// Keys provided by user
 const SERVICE_ID = 'service_szj61vl';
 const TEMPLATE_ID = 'template_f9r5rob';
-const PUBLIC_KEY = 'W91BBpwbABvkRv6';
+const PUBLIC_KEY = 's-W91BBpwbABvkRv6';
 
 export const initEmail = () => {
-    emailjs.init(PUBLIC_KEY);
+    emailjs.init({
+        publicKey: PUBLIC_KEY,
+    });
 };
 
 export const sendContactEmail = async (formData) => {
@@ -15,7 +17,8 @@ export const sendContactEmail = async (formData) => {
             from_name: formData.name,
             from_email: formData.email,
             message: formData.message,
-            to_email: 'aneestaqa@gmail.com'
+            to_email: 'aneestaqa@gmail.com', // This must be mapped in Dashboard or it won't work
+            reply_to: formData.email
         };
 
         const response = await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY);
@@ -38,6 +41,7 @@ export const sendOrderEmail = async (orderData) => {
         const templateParams = {
             from_name: customer.name,
             from_email: customer.email,
+            to_email: 'aneestaqa@gmail.com', // Primary recipient
             message: `
 New Order Received!
 
@@ -53,7 +57,7 @@ Email: ${customer.email}
 Address: ${customer.address}, ${customer.city}
 Instructions: ${customer.instructions || 'None'}
             `,
-            to_email: 'aneestaqa@gmail.com'
+            reply_to: customer.email
         };
 
         const response = await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY);
