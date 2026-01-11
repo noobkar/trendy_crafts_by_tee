@@ -26,6 +26,23 @@ function App() {
         {/* Placeholder for other routes */}
         <Route path="*" element={<Home />} />
       </Routes>
+      <div style={{
+        position: 'fixed',
+        bottom: '10px',
+        right: '15px',
+        fontSize: '0.75rem',
+        color: 'var(--color-text-light)', // uses theme var
+        opacity: 0.7,
+        zIndex: 9999,
+        background: 'rgba(255,255,255,0.7)',
+        padding: '2px 8px',
+        borderRadius: '12px',
+        backdropFilter: 'blur(4px)',
+        pointerEvents: 'none',
+        fontWeight: 500
+      }}>
+        developed by amjid_afri & amo_u with love ❤️
+      </div>
     </CartProvider>
   );
 }
