@@ -2,16 +2,16 @@
 import { initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
 
-// TODO: Replace with your Firebase project configuration
-// Get these values from Firebase Console > Project Settings > Your Apps
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID",
-    measurementId: "YOUR_MEASUREMENT_ID"
+    apiKey: "AIzaSyBfCJUYQHm39bARaZFH0twdfd0lyGcdfG0",
+    authDomain: "trendy-crafts-web.firebaseapp.com",
+    projectId: "trendy-crafts-web",
+    storageBucket: "trendy-crafts-web.firebasestorage.app",
+    messagingSenderId: "475172906675",
+    appId: "1:475172906675:web:4cbfa32598c532ca8b32c6",
+    measurementId: "G-9YPJ5Z58M4"
 };
 
 // Initialize Firebase
