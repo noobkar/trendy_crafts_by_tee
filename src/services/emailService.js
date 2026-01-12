@@ -14,10 +14,11 @@ export const initEmail = () => {
 export const sendContactEmail = async (formData) => {
     try {
         const templateParams = {
-            from_name: formData.name,
+            name: formData.name, // Matched to {{name}}
+            title: 'New Contact Message', // Matched to {{title}}
+            email: 'zaveenm@gmail.com',
             from_email: formData.email,
             message: formData.message,
-            email: 'zaveenm@gmail.com', // Matched to {{email}} in dashboard
             reply_to: formData.email
         };
 
@@ -32,17 +33,13 @@ export const sendContactEmail = async (formData) => {
 export const sendOrderEmail = async (orderData) => {
     try {
         const { items, total, customer } = orderData;
-        
+
         // Format items list for email
-        const itemsHtml = items.map(item => 
+        const itemsHtml = items.map(item =>
             `- ${item.title} (x${item.quantity}): $${(item.price * item.quantity).toFixed(2)}`
         ).join('\n');
 
-        const templateParams = {
-            from_name: customer.name,
-            from_email: customer.email,
-            email: 'zaveenm@gmail.com', // Matched to {{email}} in dashboard
-            message: `
+        const messageBody = `
 New Order Received!
 
 ORDER DETAILS:
@@ -56,7 +53,14 @@ Name: ${customer.name}
 Email: ${customer.email}
 Address: ${customer.address}, ${customer.city}
 Instructions: ${customer.instructions || 'None'}
-            `,
+        `;
+
+        const templateParams = {
+            name: customer.name, // Matched to {{name}}
+            title: `New Order ($${total})`, // Matched to {{title}}
+            email: 'zaveenm@gmail.com',
+            from_email: customer.email,
+            message: messageBody,
             reply_to: customer.email
         };
 
