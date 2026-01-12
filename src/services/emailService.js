@@ -1,6 +1,6 @@
 import emailjs from '@emailjs/browser';
 
-// Keys provided by user
+// Keys from User & Dashboard Screenshot
 const SERVICE_ID = 'service_szj61vl';
 const TEMPLATE_ID = 'template_4esjzmp';
 const PUBLIC_KEY = 's-W91BBpwbABvkRv6';
@@ -16,12 +16,13 @@ export const sendContactEmail = async (formData) => {
         const templateParams = {
             name: formData.name, // Matched to {{name}}
             title: 'New Contact Message', // Matched to {{title}}
-            email: 'zaveenm@gmail.com',
+            email: 'zaveenm@gmail.com', // Merchant email
             from_email: formData.email,
             message: formData.message,
             reply_to: formData.email
         };
 
+        // Explicitly passing PUBLIC_KEY as 4th arg to ensure it works
         const response = await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY);
         return { success: true, response };
     } catch (error) {
@@ -58,12 +59,13 @@ Instructions: ${customer.instructions || 'None'}
         const templateParams = {
             name: customer.name, // Matched to {{name}}
             title: `New Order ($${total})`, // Matched to {{title}}
-            email: 'zaveenm@gmail.com',
+            email: 'zaveenm@gmail.com', // Merchant email
             from_email: customer.email,
-            message: messageBody,
+            message: messageBody, // Passed in case template uses it
             reply_to: customer.email
         };
 
+        // Explicitly passing PUBLIC_KEY as 4th arg to ensure it works
         const response = await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY);
         return { success: true, response };
     } catch (error) {
