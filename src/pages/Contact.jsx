@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import { Instagram, Send, Loader2 } from 'lucide-react';
 import { sendContactEmail } from '../services/emailService';
+import { trackContactFormSubmit } from '../services/analyticsService';
 
 const Contact = () => {
     const [formData, setFormData] = useState({
@@ -21,6 +22,9 @@ const Contact = () => {
             setStatus('success');
             setFormData({ name: '', email: '', message: '' });
             setTimeout(() => setStatus('idle'), 5000);
+
+            // Track analytics
+            trackContactFormSubmit(formData);
         } else {
             setStatus('error');
             // Fallback to mailto if EmailJS fails (e.g. valid keys not set)

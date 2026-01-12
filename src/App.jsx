@@ -7,12 +7,23 @@ import Contact from './pages/Contact';
 import Checkout from './pages/Checkout';
 
 import { CartProvider } from './context/CartContext';
+import { initializeAnalytics, trackPageView } from './services/analyticsService';
 
 function App() {
   const { pathname } = useLocation();
 
+  // Initialize analytics on app load
+  useEffect(() => {
+    initializeAnalytics();
+  }, []);
+
+  // Track page views and scroll to top on route change
   useEffect(() => {
     window.scrollTo(0, 0);
+
+    // Track page view with location
+    const pageName = pathname === '/' ? 'Home' : pathname.substring(1).charAt(0).toUpperCase() + pathname.substring(2);
+    trackPageView(pageName);
   }, [pathname]);
 
   return (

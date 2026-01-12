@@ -4,6 +4,7 @@ import logo from '../assets/logo.png';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import CartDrawer from './CartDrawer';
+import { trackSearch } from '../services/analyticsService';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -29,10 +30,14 @@ const Navbar = () => {
 
   const handleSearchSubmit = () => {
     if (searchQuery.trim()) {
-      navigate(`/shop?q=${encodeURIComponent(searchQuery.trim())}`);
+      const query = searchQuery.trim();
+      navigate(`/shop?q=${encodeURIComponent(query)}`);
       setIsSearchOpen(false);
       setSearchQuery('');
       setIsMobileMenuOpen(false); // Close mobile menu if open (though this is desktop only currently)
+
+      // Track search analytics
+      trackSearch(query);
     } else {
       // If empty, toggle off
       setIsSearchOpen(!isSearchOpen);

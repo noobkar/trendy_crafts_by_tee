@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import { useCart } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
 import { Send, CreditCard, Landmark, Loader2, CheckCircle } from 'lucide-react';
 import { sendOrderEmail } from '../services/emailService';
+import { trackBeginCheckout, trackPurchase } from '../services/analyticsService';
 
 const Checkout = () => {
     const { cartItems, getCartTotal, clearCart } = useCart();
@@ -16,6 +17,13 @@ const Checkout = () => {
         instructions: ''
     });
     const [status, setStatus] = useState('idle'); // idle, sending, success, error
+
+    // Track checkout initiation on component mount
+    useEffect(() => {
+        if (cartItems.length > 0) {
+            trackBeginCheckout(cartItems, getCartTotal());
+        }
+    }, []);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -42,6 +50,9 @@ const Checkout = () => {
         if (result.success) {
             setStatus('success');
             clearCart();
+
+            // Track purchase analytics
+            trackPurchase(orderData);
         } else {
             console.error("EmailJS failed:", result.error);
             // Graceful fallback to mailto

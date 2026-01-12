@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { trackAddToCart, trackRemoveFromCart } from '../services/analyticsService';
 
 const CartContext = createContext();
 
@@ -28,10 +29,19 @@ export const CartProvider = ({ children }) => {
             return [...prevItems, { ...product, quantity: 1 }];
         });
         setIsCartOpen(true);
+
+        // Track analytics
+        trackAddToCart(product);
     };
 
     const removeFromCart = (id) => {
+        const itemToRemove = cartItems.find(item => item.id === id);
         setCartItems(prevItems => prevItems.filter(item => item.id !== id));
+
+        // Track analytics
+        if (itemToRemove) {
+            trackRemoveFromCart(itemToRemove);
+        }
     };
 
     const updateQuantity = (id, delta) => {
