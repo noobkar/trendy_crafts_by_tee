@@ -17,11 +17,11 @@ export const sendContactEmail = async (formData) => {
             from_name: formData.name,
             from_email: formData.email,
             message: formData.message,
-            to_email: 'aneestaqa@gmail.com', // This must be mapped in Dashboard or it won't work
+            to_email: 'zaveenm@gmail.com',
             reply_to: formData.email
         };
 
-        const response = await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY);
+        const response = await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams);
         return { success: true, response };
     } catch (error) {
         console.error('Email Error:', error);
@@ -41,7 +41,7 @@ export const sendOrderEmail = async (orderData) => {
         const templateParams = {
             from_name: customer.name,
             from_email: customer.email,
-            to_email: 'aneestaqa@gmail.com', // Primary recipient
+            to_email: 'zaveenm@gmail.com', // Primary recipient
             message: `
 New Order Received!
 
@@ -60,7 +60,7 @@ Instructions: ${customer.instructions || 'None'}
             reply_to: customer.email
         };
 
-        const response = await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY);
+        const response = await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams);
         return { success: true, response };
     } catch (error) {
         console.error('Email Error:', error);
