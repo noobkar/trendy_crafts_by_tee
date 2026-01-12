@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import ProductCard from '../components/ProductCard';
 import trayImg from '../assets/tray.png';
 import vaseImg from '../assets/vase.png';
 import candleImg from '../assets/candle.png';
+import { useSearchParams } from 'react-router-dom';
 
 const Shop = () => {
     // Extended product list
@@ -16,12 +17,25 @@ const Shop = () => {
         { id: 6, title: 'Tall Ribbed Vase', category: 'Vases', price: 42.00, image: vaseImg },
     ];
 
+    const [searchParams] = useSearchParams();
+    const searchQuery = searchParams.get('q');
     const [filter, setFilter] = useState('All');
     const categories = ['All', 'Trays', 'Vases', 'Candle Holders', 'Decor'];
 
-    const filteredProducts = filter === 'All'
-        ? allProducts
-        : allProducts.filter(p => p.category === filter);
+    // Reset filter to 'All' if a new search is performed (optional but good UX)
+    useEffect(() => {
+        if (searchQuery) {
+            setFilter('All');
+        }
+    }, [searchQuery]);
+
+    const filteredProducts = allProducts.filter(product => {
+        const matchesCategory = filter === 'All' || product.category === filter;
+        const matchesSearch = searchQuery
+            ? product.title.toLowerCase().includes(searchQuery.toLowerCase())
+            : true;
+        return matchesCategory && matchesSearch;
+    });
 
     return (
         <div style={{ paddingBottom: '4rem', paddingTop: '100px' }}>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ShoppingBag, Search, Menu, X } from 'lucide-react';
 import logo from '../assets/logo.png';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import CartDrawer from './CartDrawer';
 
@@ -21,6 +21,23 @@ const Navbar = () => {
 
   // Check if we are on the contact page to potentially adjust styles (optional, keeping consistent for now)
   const isContactPage = location.pathname === '/contact';
+
+  /* Search Logic */
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
+
+  const handleSearchSubmit = () => {
+    if (searchQuery.trim()) {
+      navigate(`/shop?q=${encodeURIComponent(searchQuery.trim())}`);
+      setIsSearchOpen(false);
+      setSearchQuery('');
+      setIsMobileMenuOpen(false); // Close mobile menu if open (though this is desktop only currently)
+    } else {
+      // If empty, toggle off
+      setIsSearchOpen(!isSearchOpen);
+    }
+  };
 
   return (
     <>
@@ -102,9 +119,42 @@ const Navbar = () => {
 
           {/* Actions */}
           <div className="flex-center" style={{ gap: '1.5rem', zIndex: 1001 }}>
-            <button aria-label="Search" className="hidden-mobile">
-              <Search size={20} color="var(--color-text-main)" />
-            </button>
+
+            {/* Search Bar */}
+            <div className="hidden-mobile flex-center" style={{ position: 'relative' }}>
+              <div style={{
+                width: isSearchOpen ? '200px' : '0',
+                opacity: isSearchOpen ? 1 : 0,
+                overflow: 'hidden',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                marginRight: isSearchOpen ? '10px' : '0'
+              }}>
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleSearchSubmit()}
+                  style={{
+                    width: '100%',
+                    padding: '6px 12px',
+                    borderRadius: '20px',
+                    border: '1px solid #e0e0e0',
+                    outline: 'none',
+                    fontSize: '0.9rem',
+                    backgroundColor: 'white'
+                  }}
+                />
+              </div>
+              <button
+                aria-label="Search"
+                onClick={handleSearchSubmit}
+                style={{ transition: 'transform 0.2s' }}
+              >
+                <Search size={20} color="var(--color-text-main)" />
+              </button>
+            </div>
+
             <div className="relative" style={{ position: 'relative' }}>
               <button aria-label="Cart" onClick={() => setIsCartOpen(true)}>
                 <ShoppingBag size={20} color="var(--color-text-main)" />
