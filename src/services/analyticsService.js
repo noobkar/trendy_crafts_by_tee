@@ -1,6 +1,7 @@
 import { analytics } from '../config/firebaseConfig';
 import { logEvent } from 'firebase/analytics';
-import { getGeolocation } from './geolocationService';
+// DISABLED: Location permission feature temporarily disabled
+// import { getGeolocation } from './geolocationService';
 
 /**
  * Initialize analytics tracking
@@ -13,20 +14,22 @@ export const initializeAnalytics = async () => {
     }
 
     try {
+        // DISABLED: Location tracking temporarily disabled
         // Get user's location
-        const location = await getGeolocation();
+        // const location = await getGeolocation();
 
         // Log app initialization with location
         logEvent(analytics, 'app_initialized', {
-            ...(location && {
-                latitude: location.latitude,
-                longitude: location.longitude,
-                location_accuracy: location.accuracy
-            }),
+            // DISABLED: Location data temporarily disabled
+            // ...(location && {
+            //     latitude: location.latitude,
+            //     longitude: location.longitude,
+            //     location_accuracy: location.accuracy
+            // }),
             timestamp: new Date().toISOString()
         });
 
-        console.log('Analytics initialized with location tracking');
+        console.log('Analytics initialized (location tracking disabled)');
     } catch (error) {
         console.error('Analytics initialization error:', error);
     }
@@ -39,16 +42,18 @@ export const trackPageView = async (pageName, additionalParams = {}) => {
     if (!analytics) return;
 
     try {
-        const location = await getGeolocation();
+        // DISABLED: Location tracking temporarily disabled
+        // const location = await getGeolocation();
 
         logEvent(analytics, 'page_view', {
             page_name: pageName,
             page_location: window.location.href,
             page_path: window.location.pathname,
-            ...(location && {
-                latitude: location.latitude,
-                longitude: location.longitude
-            }),
+            // DISABLED: Location data temporarily disabled
+            // ...(location && {
+            //     latitude: location.latitude,
+            //     longitude: location.longitude
+            // }),
             ...additionalParams,
             timestamp: new Date().toISOString()
         });
@@ -66,13 +71,15 @@ export const trackEvent = async (eventName, params = {}) => {
     if (!analytics) return;
 
     try {
-        const location = await getGeolocation();
+        // DISABLED: Location tracking temporarily disabled
+        // const location = await getGeolocation();
 
         logEvent(analytics, eventName, {
-            ...(location && {
-                latitude: location.latitude,
-                longitude: location.longitude
-            }),
+            // DISABLED: Location data temporarily disabled
+            // ...(location && {
+            //     latitude: location.latitude,
+            //     longitude: location.longitude
+            // }),
             ...params,
             timestamp: new Date().toISOString()
         });
@@ -145,3 +152,4 @@ export const trackContactFormSubmit = async (formData) => {
         from_email: formData.email
     });
 };
+
