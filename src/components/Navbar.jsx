@@ -20,8 +20,22 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Check if we are on the contact page to potentially adjust styles (optional, keeping consistent for now)
-  const isContactPage = location.pathname === '/contact';
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location.pathname]);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMobileMenuOpen]);
 
   /* Search Logic */
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -34,12 +48,9 @@ const Navbar = () => {
       navigate(`/shop?q=${encodeURIComponent(query)}`);
       setIsSearchOpen(false);
       setSearchQuery('');
-      setIsMobileMenuOpen(false); // Close mobile menu if open (though this is desktop only currently)
-
-      // Track search analytics
+      setIsMobileMenuOpen(false);
       trackSearch(query);
     } else {
-      // If empty, toggle off
       setIsSearchOpen(!isSearchOpen);
     }
   };
@@ -47,27 +58,41 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/80 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-6'
-          }`}
+        className="main-navbar"
         style={{
-          background: isScrolled ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.5)',
+          background: isScrolled ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.7)',
           backdropFilter: 'blur(12px)',
-          padding: isScrolled ? '1rem 2rem' : '1.5rem 2rem',
+          WebkitBackdropFilter: 'blur(12px)',
           transition: 'all 0.3s ease',
           position: 'fixed',
           width: '100%',
           top: 0,
+          left: 0,
           zIndex: 1000,
           borderBottom: isScrolled ? '1px solid rgba(0,0,0,0.05)' : 'none'
         }}
       >
-        <div className="container flex-between">
+        <div className="nav-container" style={{
+          maxWidth: '1280px',
+          margin: '0 auto',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: isScrolled ? '0.75rem 1.5rem' : '1rem 1.5rem',
+          transition: 'padding 0.3s ease'
+        }}>
           {/* Logo */}
-          <Link to="/" className="flex-center" style={{ gap: '12px', zIndex: 1001 }}>
-            <img src={logo} alt="Trendy Crafts" style={{ height: '50px', width: 'auto' }} />
-            <span style={{
+          <Link to="/" className="nav-logo" style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+            zIndex: 1001,
+            textDecoration: 'none'
+          }}>
+            <img src={logo} alt="Trendy Crafts" className="logo-img" style={{ height: '45px', width: 'auto' }} />
+            <span className="brand-name" style={{
               fontFamily: 'Playfair Display, serif',
-              fontSize: '1.5rem',
+              fontSize: '1.25rem',
               fontWeight: 600,
               color: 'var(--color-primary)',
               fontStyle: 'italic',
@@ -78,43 +103,21 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop Menu */}
-          <div className={`nav-links ${isMobileMenuOpen ? 'open' : ''}`} style={{
+          <div className="nav-links-desktop" style={{
             display: 'flex',
-            gap: '3rem',
-            /* Mobile styles handled via media queries or inline override for simplicity in this demo */
-            ...(isMobileMenuOpen ? {
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              background: 'white',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-              zIndex: 999
-            } : {}) // Note: proper responsive CSS would be better, but this works for demo
+            gap: '2.5rem',
           }}>
-            {/* Mobile Close Button */}
-            {isMobileMenuOpen && (
-              <button
-                onClick={() => setIsMobileMenuOpen(false)}
-                style={{ position: 'absolute', top: '2rem', right: '2rem' }}
-              >
-                <X size={24} />
-              </button>
-            )}
-
             {['Home', 'Shop', 'About', 'Contact'].map((item) => (
               <Link
                 key={item}
                 to={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
-                onClick={() => setIsMobileMenuOpen(false)}
                 style={{
                   fontWeight: 500,
-                  fontSize: isMobileMenuOpen ? '2rem' : '1rem',
+                  fontSize: '1rem',
                   position: 'relative',
-                  color: 'var(--color-text-main)'
+                  color: 'var(--color-text-main)',
+                  textDecoration: 'none',
+                  transition: 'color 0.2s ease'
                 }}
               >
                 {item}
@@ -123,16 +126,15 @@ const Navbar = () => {
           </div>
 
           {/* Actions */}
-          <div className="flex-center" style={{ gap: '1.5rem', zIndex: 1001 }}>
-
-            {/* Search Bar */}
-            <div className="hidden-mobile flex-center" style={{ position: 'relative' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', zIndex: 1001 }}>
+            {/* Search Bar - Desktop Only */}
+            <div className="search-desktop" style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
               <div style={{
-                width: isSearchOpen ? '200px' : '0',
+                width: isSearchOpen ? '180px' : '0',
                 opacity: isSearchOpen ? 1 : 0,
                 overflow: 'hidden',
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                marginRight: isSearchOpen ? '10px' : '0'
+                marginRight: isSearchOpen ? '8px' : '0'
               }}>
                 <input
                   type="text"
@@ -142,7 +144,7 @@ const Navbar = () => {
                   onKeyDown={(e) => e.key === 'Enter' && handleSearchSubmit()}
                   style={{
                     width: '100%',
-                    padding: '6px 12px',
+                    padding: '8px 12px',
                     borderRadius: '20px',
                     border: '1px solid #e0e0e0',
                     outline: 'none',
@@ -154,24 +156,40 @@ const Navbar = () => {
               <button
                 aria-label="Search"
                 onClick={handleSearchSubmit}
-                style={{ transition: 'transform 0.2s' }}
+                style={{
+                  transition: 'transform 0.2s',
+                  padding: '8px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
               >
                 <Search size={20} color="var(--color-text-main)" />
               </button>
             </div>
 
-            <div className="relative" style={{ position: 'relative' }}>
-              <button aria-label="Cart" onClick={() => setIsCartOpen(true)}>
+            {/* Cart */}
+            <div style={{ position: 'relative' }}>
+              <button
+                aria-label="Cart"
+                onClick={() => setIsCartOpen(true)}
+                style={{
+                  padding: '8px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
                 <ShoppingBag size={20} color="var(--color-text-main)" />
               </button>
               {cartCount > 0 && (
                 <span style={{
                   position: 'absolute',
-                  top: '-8px',
-                  right: '-8px',
+                  top: '0',
+                  right: '0',
                   background: 'var(--color-primary)',
                   color: 'white',
-                  fontSize: '0.7rem',
+                  fontSize: '0.65rem',
                   height: '16px',
                   width: '16px',
                   borderRadius: '50%',
@@ -183,23 +201,103 @@ const Navbar = () => {
               )}
             </div>
 
-            {/* Mobile Toggle */}
-            <div className="mobile-toggle" style={{ display: 'none' }}>
-              <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-                <Menu />
-              </button>
-            </div>
+            {/* Mobile Menu Toggle */}
+            <button
+              className="mobile-toggle"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle menu"
+              style={{
+                padding: '8px',
+                display: 'none',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
           </div>
         </div>
       </nav>
+
+      {/* Mobile Menu Overlay */}
+      <div
+        className={`mobile-menu-overlay ${isMobileMenuOpen ? 'open' : ''}`}
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'white',
+          zIndex: 999,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: '2rem',
+          opacity: isMobileMenuOpen ? 1 : 0,
+          visibility: isMobileMenuOpen ? 'visible' : 'hidden',
+          transition: 'opacity 0.3s ease, visibility 0.3s ease',
+          paddingTop: '80px'
+        }}
+      >
+        {['Home', 'Shop', 'About', 'Contact'].map((item, index) => (
+          <Link
+            key={item}
+            to={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
+            onClick={() => setIsMobileMenuOpen(false)}
+            style={{
+              fontWeight: 500,
+              fontSize: '1.75rem',
+              color: 'var(--color-text-main)',
+              textDecoration: 'none',
+              opacity: isMobileMenuOpen ? 1 : 0,
+              transform: isMobileMenuOpen ? 'translateY(0)' : 'translateY(20px)',
+              transition: `opacity 0.3s ease ${index * 0.1}s, transform 0.3s ease ${index * 0.1}s`
+            }}
+          >
+            {item}
+          </Link>
+        ))}
+      </div>
+
       <CartDrawer />
 
-      {/* Mobile Styles Injection */}
+      {/* Mobile Styles */}
       <style>{`
         @media (max-width: 768px) {
-            .hidden-mobile { display: none !important; }
-            .mobile-toggle { display: block !important; }
-            .nav-links:not(.open) { display: none !important; }
+          .nav-links-desktop {
+            display: none !important;
+          }
+          .search-desktop {
+            display: none !important;
+          }
+          .mobile-toggle {
+            display: flex !important;
+          }
+          .nav-container {
+            padding: 0.75rem 1rem !important;
+          }
+          .logo-img {
+            height: 35px !important;
+          }
+          .brand-name {
+            font-size: 1rem !important;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .nav-container {
+            padding: 0.5rem 0.75rem !important;
+          }
+          .logo-img {
+            height: 30px !important;
+          }
+          .brand-name {
+            font-size: 0.85rem !important;
+            max-width: 140px;
+            line-height: 1.2;
+          }
         }
       `}</style>
     </>
@@ -207,3 +305,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+

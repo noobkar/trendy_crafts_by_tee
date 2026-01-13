@@ -4,41 +4,45 @@ import logo from '../assets/logo.png';
 
 const About = () => {
     return (
-        <div style={{ paddingBottom: '4rem', paddingTop: '100px' }}>
+        <div className="about-page" style={{ paddingBottom: '3rem', paddingTop: '80px' }}>
             <Navbar />
             <div className="container">
-                <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-                    <h1 style={{ fontSize: '3rem', marginBottom: '1rem' }}>About Trendy Crafts</h1>
-                    <p style={{ fontSize: '1.2rem', color: 'var(--color-text-light)', maxWidth: '700px', margin: '0 auto' }}>
+                <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+                    <h1 className="about-title" style={{ marginBottom: '1rem' }}>About Trendy Crafts</h1>
+                    <p className="about-subtitle" style={{ fontSize: '1.1rem', color: 'var(--color-text-light)', maxWidth: '700px', margin: '0 auto' }}>
                         Handcrafted with love, bringing elegance and warmth to your home.
                     </p>
                 </div>
 
-                <div style={{
+                <div className="story-section" style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '4rem',
+                    gap: '3rem',
                     flexWrap: 'wrap-reverse',
-                    marginBottom: '4rem'
+                    marginBottom: '3rem'
                 }}>
-                    <div style={{ flex: 1, minWidth: '300px' }}>
-                        <h2 style={{ fontFamily: 'var(--font-accent)', fontSize: '2.5rem', marginBottom: '1.5rem', color: 'var(--color-primary)' }}>
+                    <div className="story-content" style={{ flex: 1, minWidth: '280px' }}>
+                        <h2 className="story-title" style={{
+                            fontFamily: 'var(--font-accent)',
+                            marginBottom: '1.5rem',
+                            color: 'var(--color-primary)'
+                        }}>
                             Our Story
                         </h2>
-                        <p style={{ marginBottom: '1.5rem', fontSize: '1.1rem' }}>
+                        <p style={{ marginBottom: '1.25rem', fontSize: '1rem', lineHeight: 1.7 }}>
                             Trendy Crafts by Tee started with a passion for creating beautiful, functional art.
                             We believe that home decor should not only look good but feel good too. That's why we work with
                             high-quality gypsum to create sustainable, durable, and uniquely handcrafted pieces.
                         </p>
-                        <p style={{ marginBottom: '1.5rem', fontSize: '1.1rem' }}>
+                        <p style={{ marginBottom: '1.25rem', fontSize: '1rem', lineHeight: 1.7 }}>
                             Every tray, vase, and candle holder is mixed, poured, sanded, and sealed by hand.
                             The imperfections in the material are what make each piece truly one-of-a-kind.
                         </p>
                     </div>
-                    <div style={{ flex: 1, minWidth: '300px', display: 'flex', justifyContent: 'center' }}>
+                    <div className="story-image" style={{ flex: 1, minWidth: '280px', display: 'flex', justifyContent: 'center' }}>
                         <div style={{
                             width: '100%',
-                            maxWidth: '400px',
+                            maxWidth: '350px',
                             aspectRatio: '1/1',
                             borderRadius: '50% 50% 0 0',
                             background: '#F3E5D8',
@@ -47,15 +51,14 @@ const About = () => {
                             justifyContent: 'center',
                             overflow: 'hidden'
                         }}>
-                            {/* Placeholder for About Image - could use logo or product shot */}
-                            <img src={logo} alt="About Us" style={{ width: '80%', height: 'auto', opacity: 0.9 }} />
+                            <img src={logo} alt="About Us" style={{ width: '75%', height: 'auto', opacity: 0.9 }} />
                         </div>
                     </div>
                 </div>
 
-                <div style={{ textAlign: 'center', padding: '4rem', background: 'var(--color-bg)', borderRadius: '16px' }}>
-                    <h2 style={{ marginBottom: '2rem' }}>Why Support Handmade?</h2>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem' }}>
+                <div className="values-section" style={{ textAlign: 'center', padding: '2.5rem 1.5rem', background: 'var(--color-bg)', borderRadius: '16px' }}>
+                    <h2 style={{ marginBottom: '1.5rem' }}>Why Support Handmade?</h2>
+                    <div className="values-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem' }}>
                         <div>
                             <h3 style={{ color: 'var(--color-primary)' }}>Unique</h3>
                             <p>No two pieces are exactly alike.</p>
@@ -71,8 +74,49 @@ const About = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Mobile Responsive Styles */}
+            <style>{`
+                @media (max-width: 768px) {
+                    .about-page {
+                        padding-top: 70px !important;
+                    }
+                    .about-title {
+                        font-size: 2rem !important;
+                    }
+                    .about-subtitle {
+                        font-size: 1rem !important;
+                    }
+                    .story-section {
+                        gap: 2rem !important;
+                    }
+                    .story-title {
+                        font-size: 1.75rem !important;
+                    }
+                    .values-section {
+                        padding: 2rem 1rem !important;
+                    }
+                    .values-grid {
+                        grid-template-columns: 1fr !important;
+                        gap: 1rem !important;
+                    }
+                }
+                
+                @media (max-width: 480px) {
+                    .about-page {
+                        padding-top: 60px !important;
+                    }
+                    .about-title {
+                        font-size: 1.75rem !important;
+                    }
+                    .story-content, .story-image {
+                        min-width: 100% !important;
+                    }
+                }
+            `}</style>
         </div>
     );
 };
 
 export default About;
+

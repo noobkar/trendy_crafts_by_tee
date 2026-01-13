@@ -42,21 +42,21 @@ const Contact = () => {
     };
 
     return (
-        <div style={{ paddingBottom: '4rem', paddingTop: '100px' }}>
+        <div className="contact-page" style={{ paddingBottom: '3rem', paddingTop: '80px' }}>
             <Navbar />
             <div className="container">
                 <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-                    <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-                        <h1 style={{ fontSize: '3rem', marginBottom: '1rem' }}>Get in Touch</h1>
-                        <p style={{ fontSize: '1.2rem', color: 'var(--color-text-light)' }}>
+                    <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+                        <h1 className="contact-title" style={{ marginBottom: '1rem' }}>Get in Touch</h1>
+                        <p className="contact-subtitle" style={{ fontSize: '1.1rem', color: 'var(--color-text-light)' }}>
                             Have a custom order request or a question? We'd love to hear from you.
                         </p>
                     </div>
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '2rem' }}>
                         {/* Contact Form */}
-                        <div className="glass-panel" style={{ padding: '2rem' }}>
-                            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                        <div className="glass-panel contact-form" style={{ padding: '1.5rem' }}>
+                            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                                 <div>
                                     <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Name</label>
                                     <input
@@ -67,10 +67,12 @@ const Contact = () => {
                                         onChange={handleChange}
                                         style={{
                                             width: '100%',
-                                            padding: '12px',
+                                            padding: '14px',
                                             borderRadius: '8px',
                                             border: '1px solid var(--color-border)',
-                                            fontFamily: 'var(--font-body)'
+                                            fontFamily: 'var(--font-body)',
+                                            fontSize: '1rem',
+                                            minHeight: '48px'
                                         }}
                                         placeholder="Your Name"
                                     />
@@ -85,10 +87,12 @@ const Contact = () => {
                                         onChange={handleChange}
                                         style={{
                                             width: '100%',
-                                            padding: '12px',
+                                            padding: '14px',
                                             borderRadius: '8px',
                                             border: '1px solid var(--color-border)',
-                                            fontFamily: 'var(--font-body)'
+                                            fontFamily: 'var(--font-body)',
+                                            fontSize: '1rem',
+                                            minHeight: '48px'
                                         }}
                                         placeholder="your@email.com"
                                     />
@@ -103,10 +107,11 @@ const Contact = () => {
                                         rows="5"
                                         style={{
                                             width: '100%',
-                                            padding: '12px',
+                                            padding: '14px',
                                             borderRadius: '8px',
                                             border: '1px solid var(--color-border)',
                                             fontFamily: 'var(--font-body)',
+                                            fontSize: '1rem',
                                             resize: 'vertical'
                                         }}
                                         placeholder="Tell us about your custom order idea..."
@@ -114,13 +119,13 @@ const Contact = () => {
                                 </div>
 
                                 {status === 'success' && (
-                                    <div style={{ padding: '10px', background: '#d4edda', color: '#155724', borderRadius: '8px', textAlign: 'center' }}>
+                                    <div style={{ padding: '12px', background: '#d4edda', color: '#155724', borderRadius: '8px', textAlign: 'center' }}>
                                         Message sent successfully!
                                     </div>
                                 )}
 
                                 {status === 'error' && (
-                                    <div style={{ padding: '10px', background: '#f8d7da', color: '#721c24', borderRadius: '8px', textAlign: 'center' }}>
+                                    <div style={{ padding: '12px', background: '#f8d7da', color: '#721c24', borderRadius: '8px', textAlign: 'center' }}>
                                         Failed to send automatically. Opening mail app...
                                     </div>
                                 )}
@@ -128,7 +133,7 @@ const Contact = () => {
                                 <button
                                     type="submit"
                                     className="btn-primary"
-                                    style={{ justifyContent: 'center' }}
+                                    style={{ justifyContent: 'center', minHeight: '48px' }}
                                     disabled={status === 'sending'}
                                 >
                                     {status === 'sending' ? (
@@ -141,7 +146,7 @@ const Contact = () => {
                         </div>
 
                         {/* Social Links */}
-                        <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+                        <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
                             <h3 style={{ marginBottom: '1rem' }}>Follow Us</h3>
                             <a
                                 href="https://www.instagram.com/trendy_crafts_by_tee/"
@@ -151,7 +156,7 @@ const Contact = () => {
                                     display: 'inline-flex',
                                     alignItems: 'center',
                                     gap: '10px',
-                                    fontSize: '1.2rem',
+                                    fontSize: '1.1rem',
                                     color: 'var(--color-primary)',
                                     fontWeight: 600
                                 }}
@@ -162,8 +167,39 @@ const Contact = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Mobile Responsive Styles */}
+            <style>{`
+                @media (max-width: 768px) {
+                    .contact-page {
+                        padding-top: 70px !important;
+                    }
+                    .contact-title {
+                        font-size: 2rem !important;
+                    }
+                    .contact-subtitle {
+                        font-size: 1rem !important;
+                    }
+                    .contact-form {
+                        padding: 1.25rem !important;
+                    }
+                }
+                
+                @media (max-width: 480px) {
+                    .contact-page {
+                        padding-top: 60px !important;
+                    }
+                    .contact-title {
+                        font-size: 1.75rem !important;
+                    }
+                    .contact-form {
+                        padding: 1rem !important;
+                    }
+                }
+            `}</style>
         </div>
     );
 };
 
 export default Contact;
+

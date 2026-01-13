@@ -73,78 +73,104 @@ const Checkout = () => {
 
     if (status === 'success') {
         return (
-            <div style={{ paddingBottom: '4rem', paddingTop: '100px', textAlign: 'center', minHeight: '80vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+            <div className="checkout-success" style={{ paddingBottom: '3rem', paddingTop: '80px', textAlign: 'center', minHeight: '80vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
                 <Navbar />
-                <div style={{ background: '#d4edda', padding: '3rem', borderRadius: '16px', maxWidth: '500px' }}>
-                    <CheckCircle size={64} color="#155724" style={{ marginBottom: '1rem' }} />
-                    <h1 style={{ fontSize: '2rem', marginBottom: '1rem', color: '#155724' }}>Order Placed!</h1>
-                    <p style={{ fontSize: '1.2rem', marginBottom: '2rem' }}>
+                <div className="success-box" style={{ background: '#d4edda', padding: '2.5rem 1.5rem', borderRadius: '16px', maxWidth: '500px', margin: '0 1rem' }}>
+                    <CheckCircle size={56} color="#155724" style={{ marginBottom: '1rem' }} />
+                    <h1 className="success-title" style={{ marginBottom: '1rem', color: '#155724' }}>Order Placed!</h1>
+                    <p className="success-text" style={{ fontSize: '1.1rem', marginBottom: '2rem', lineHeight: 1.6 }}>
                         Thank you for your order, {formData.name}. We have received your request and will contact you shortly via email regarding payment and shipping.
                     </p>
                     <button className="btn-primary" onClick={() => navigate('/shop')}>
                         Continue Shopping
                     </button>
                 </div>
+
+                <style>{`
+                    @media (max-width: 768px) {
+                        .checkout-success { padding-top: 70px !important; }
+                        .success-box { padding: 2rem 1.25rem !important; }
+                        .success-title { font-size: 1.75rem !important; }
+                        .success-text { font-size: 1rem !important; }
+                    }
+                `}</style>
             </div>
         );
     }
 
     if (cartItems.length === 0) {
         return (
-            <div style={{ paddingTop: '100px', textAlign: 'center', minHeight: '60vh' }}>
+            <div className="checkout-empty" style={{ paddingTop: '80px', textAlign: 'center', minHeight: '60vh', padding: '1rem' }}>
                 <Navbar />
-                <h1>Your cart is empty</h1>
+                <h1 className="empty-title">Your cart is empty</h1>
                 <button className="btn-primary" onClick={() => navigate('/shop')} style={{ marginTop: '1rem' }}>
                     Go Shopping
                 </button>
+
+                <style>{`
+                    @media (max-width: 768px) {
+                        .checkout-empty { padding-top: 70px !important; }
+                        .empty-title { font-size: 1.75rem !important; }
+                    }
+                `}</style>
             </div>
         );
     }
 
+    const inputStyle = {
+        width: '100%',
+        padding: '14px',
+        borderRadius: '8px',
+        border: '1px solid #ddd',
+        fontSize: '1rem',
+        fontFamily: 'var(--font-body)',
+        minHeight: '48px'
+    };
+
     return (
-        <div style={{ paddingBottom: '4rem', paddingTop: '100px' }}>
+        <div className="checkout-page" style={{ paddingBottom: '3rem', paddingTop: '80px' }}>
             <Navbar />
             <div className="container">
-                <h1 style={{ fontSize: '2.5rem', marginBottom: '2rem', textAlign: 'center' }}>Checkout</h1>
+                <h1 className="checkout-title" style={{ marginBottom: '1.5rem', textAlign: 'center' }}>Checkout</h1>
 
-                <div className="checkout-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '3rem' }}>
+                <div className="checkout-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
 
                     {/* Order Summary */}
-                    <div>
-                        <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', borderBottom: '1px solid #ddd', paddingBottom: '0.5rem' }}>Your Order</h2>
-                        <div style={{ background: '#f9f9f9', padding: '1.5rem', borderRadius: '12px' }}>
+                    <div className="order-summary">
+                        <h2 className="section-heading" style={{ marginBottom: '1.25rem', borderBottom: '1px solid #ddd', paddingBottom: '0.5rem' }}>Your Order</h2>
+                        <div style={{ background: '#f9f9f9', padding: '1.25rem', borderRadius: '12px' }}>
                             {cartItems.map(item => (
-                                <div key={item.id} className="flex-between" style={{ marginBottom: '1rem' }}>
-                                    <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                                <div key={item.id} className="flex-between cart-item" style={{ marginBottom: '0.75rem' }}>
+                                    <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
                                         <span style={{ fontWeight: 600 }}>{item.quantity}x</span>
-                                        <span>{item.title}</span>
+                                        <span className="item-title">{item.title}</span>
                                     </div>
                                     <span>${(item.price * item.quantity).toFixed(2)}</span>
                                 </div>
                             ))}
-                            <div style={{ borderTop: '1px solid #ddd', marginTop: '1rem', paddingTop: '1rem', fontWeight: 'bold', fontSize: '1.25rem' }} className="flex-between">
+                            <div style={{ borderTop: '1px solid #ddd', marginTop: '0.75rem', paddingTop: '0.75rem', fontWeight: 'bold', fontSize: '1.15rem' }} className="flex-between">
                                 <span>Total</span>
                                 <span style={{ color: 'var(--color-primary)' }}>${getCartTotal().toFixed(2)}</span>
                             </div>
                         </div>
 
                         {/* Payment Info */}
-                        <div style={{ marginTop: '2rem' }}>
-                            <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', borderBottom: '1px solid #ddd', paddingBottom: '0.5rem' }}>Payment Method</h2>
-                            <div className="glass-panel" style={{ padding: '1.5rem' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem', color: 'var(--color-primary)' }}>
-                                    <Landmark /> <strong>Manual Bank Transfer</strong>
+                        <div style={{ marginTop: '1.5rem' }}>
+                            <h2 className="section-heading" style={{ marginBottom: '1.25rem', borderBottom: '1px solid #ddd', paddingBottom: '0.5rem' }}>Payment Method</h2>
+                            <div className="glass-panel payment-info" style={{ padding: '1.25rem' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem', color: 'var(--color-primary)' }}>
+                                    <Landmark size={20} /> <strong>Manual Bank Transfer</strong>
                                 </div>
-                                <p style={{ fontSize: '0.9rem', marginBottom: '1rem' }}>
+                                <p style={{ fontSize: '0.9rem', marginBottom: '0.75rem' }}>
                                     Please transfer the total amount to the following account. Your order will be processed once payment is confirmed.
                                 </p>
-                                <div style={{ background: 'rgba(255,255,255,0.5)', padding: '1rem', borderRadius: '8px', fontSize: '0.9rem', fontFamily: 'monospace' }}>
+                                <div className="bank-details" style={{ background: 'rgba(255,255,255,0.5)', padding: '0.75rem', borderRadius: '8px', fontSize: '0.85rem', fontFamily: 'monospace' }}>
                                     Bank: Example Bank<br />
                                     Account Name: Trendy Crafts<br />
                                     Account No: 1234-5678-90<br />
                                     Reference: Use your Name
                                 </div>
-                                <div style={{ marginTop: '1rem', fontSize: '0.85rem', color: '#666', fontStyle: 'italic' }}>
+                                <div style={{ marginTop: '0.75rem', fontSize: '0.8rem', color: '#666', fontStyle: 'italic' }}>
                                     * Online Payment Gateway Coming Soon
                                 </div>
                             </div>
@@ -152,9 +178,9 @@ const Checkout = () => {
                     </div>
 
                     {/* Customer Details Form */}
-                    <div>
-                        <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', borderBottom: '1px solid #ddd', paddingBottom: '0.5rem' }}>Shipping Details</h2>
-                        <form onSubmit={handleConfirmOrder} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+                    <div className="shipping-form">
+                        <h2 className="section-heading" style={{ marginBottom: '1.25rem', borderBottom: '1px solid #ddd', paddingBottom: '0.5rem' }}>Shipping Details</h2>
+                        <form onSubmit={handleConfirmOrder} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             <div>
                                 <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Full Name</label>
                                 <input
@@ -163,7 +189,7 @@ const Checkout = () => {
                                     required
                                     value={formData.name}
                                     onChange={handleChange}
-                                    style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd' }}
+                                    style={inputStyle}
                                 />
                             </div>
                             <div>
@@ -174,7 +200,7 @@ const Checkout = () => {
                                     required
                                     value={formData.email}
                                     onChange={handleChange}
-                                    style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd' }}
+                                    style={inputStyle}
                                 />
                             </div>
                             <div>
@@ -185,7 +211,7 @@ const Checkout = () => {
                                     required
                                     value={formData.address}
                                     onChange={handleChange}
-                                    style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd' }}
+                                    style={inputStyle}
                                 />
                             </div>
                             <div>
@@ -196,7 +222,7 @@ const Checkout = () => {
                                     required
                                     value={formData.city}
                                     onChange={handleChange}
-                                    style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd' }}
+                                    style={inputStyle}
                                 />
                             </div>
                             <div>
@@ -206,25 +232,26 @@ const Checkout = () => {
                                     rows="3"
                                     value={formData.instructions}
                                     onChange={handleChange}
-                                    style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #ddd' }}
+                                    style={{ ...inputStyle, minHeight: 'auto' }}
                                 />
                             </div>
 
                             {status === 'error' && (
-                                <div style={{ padding: '10px', background: '#fff3cd', color: '#856404', borderRadius: '8px', textAlign: 'center', marginBottom: '1rem' }}>
+                                <div style={{ padding: '12px', background: '#fff3cd', color: '#856404', borderRadius: '8px', textAlign: 'center' }}>
                                     Opening your email app to complete the order...
                                 </div>
                             )}
 
                             <button
                                 type="submit"
-                                className="btn-primary"
+                                className="btn-primary checkout-btn"
                                 style={{
-                                    marginTop: '1rem',
+                                    marginTop: '0.75rem',
                                     width: '100%',
                                     padding: '1rem',
                                     justifyContent: 'center',
-                                    fontSize: '1.2rem'
+                                    fontSize: '1.1rem',
+                                    minHeight: '52px'
                                 }}
                                 disabled={status === 'sending'}
                             >
@@ -241,8 +268,49 @@ const Checkout = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Mobile Responsive Styles */}
+            <style>{`
+                @media (max-width: 768px) {
+                    .checkout-page {
+                        padding-top: 70px !important;
+                    }
+                    .checkout-title {
+                        font-size: 1.75rem !important;
+                    }
+                    .checkout-grid {
+                        grid-template-columns: 1fr !important;
+                        gap: 1.5rem !important;
+                    }
+                    .section-heading {
+                        font-size: 1.25rem !important;
+                    }
+                    .item-title {
+                        font-size: 0.95rem;
+                    }
+                    .payment-info {
+                        padding: 1rem !important;
+                    }
+                    .bank-details {
+                        font-size: 0.8rem !important;
+                    }
+                }
+                
+                @media (max-width: 480px) {
+                    .checkout-page {
+                        padding-top: 60px !important;
+                    }
+                    .checkout-title {
+                        font-size: 1.5rem !important;
+                    }
+                    .checkout-btn {
+                        font-size: 1rem !important;
+                    }
+                }
+            `}</style>
         </div>
     );
 };
 
 export default Checkout;
+

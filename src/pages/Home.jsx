@@ -17,15 +17,15 @@ const Home = () => {
     ];
 
     return (
-        <div style={{ paddingBottom: '4rem' }}>
+        <div style={{ paddingBottom: '3rem' }}>
             <Navbar />
             <HeroSection />
 
             {/* Featured Collection */}
-            <section className="container" style={{ marginTop: 'var(--spacing-xl)' }}>
-                <div className="text-center" style={{ textAlign: 'center', marginBottom: '3rem' }}>
-                    <span className="text-accent" style={{ fontSize: '1.2rem', color: 'var(--color-primary)' }}>New Arrivals</span>
-                    <h2 style={{ fontSize: '2.5rem', marginTop: '0.5rem' }}>Trending Now</h2>
+            <section className="container featured-section" style={{ marginTop: 'var(--spacing-xl)' }}>
+                <div className="text-center" style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+                    <span className="text-accent" style={{ fontSize: '1.1rem', color: 'var(--color-primary)' }}>New Arrivals</span>
+                    <h2 className="section-title" style={{ marginTop: '0.5rem' }}>Trending Now</h2>
                     <p style={{ color: 'var(--color-text-light)' }}>Handpicked favorites just for you.</p>
                 </div>
 
@@ -35,35 +35,69 @@ const Home = () => {
                     ))}
                 </div>
 
-                <div className="flex-center" style={{ marginTop: '3rem' }}>
+                <div className="flex-center" style={{ marginTop: '2.5rem' }}>
                     <button className="btn-secondary">View All Products</button>
                 </div>
             </section>
 
             {/* Why Choose Us */}
-            <section style={{
+            <section className="features-section" style={{
                 background: '#EAE0D5',
                 marginTop: 'var(--spacing-xl)',
-                padding: 'var(--spacing-xl) 0',
+                padding: 'var(--spacing-lg) 0',
                 borderRadius: '0'
             }}>
-                <div className="container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
-                    <div className="feature-item" style={{ textAlign: 'center', padding: '2rem' }}>
+                <div className="container features-grid" style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                    gap: '1.5rem'
+                }}>
+                    <div className="feature-item" style={{ textAlign: 'center', padding: '1.5rem' }}>
                         <h3 style={{ fontFamily: 'var(--font-accent)', fontStyle: 'italic' }}>Eco-Friendly</h3>
                         <p>Made from natural gypsum and eco-safe pigments.</p>
                     </div>
-                    <div className="feature-item" style={{ textAlign: 'center', padding: '2rem' }}>
+                    <div className="feature-item" style={{ textAlign: 'center', padding: '1.5rem' }}>
                         <h3 style={{ fontFamily: 'var(--font-accent)', fontStyle: 'italic' }}>Handcrafted</h3>
                         <p>Each piece is poured, sanded, and sealed by hand.</p>
                     </div>
-                    <div className="feature-item" style={{ textAlign: 'center', padding: '2rem' }}>
+                    <div className="feature-item" style={{ textAlign: 'center', padding: '1.5rem' }}>
                         <h3 style={{ fontFamily: 'var(--font-accent)', fontStyle: 'italic' }}>Custom Design</h3>
                         <p>Unique patterns and colors for every order.</p>
                     </div>
                 </div>
             </section>
+
+            {/* Mobile Responsive Styles */}
+            <style>{`
+                @media (max-width: 768px) {
+                    .featured-section {
+                        margin-top: 2.5rem !important;
+                    }
+                    .features-section {
+                        margin-top: 2.5rem !important;
+                        padding: 2rem 0 !important;
+                    }
+                    .features-grid {
+                        grid-template-columns: 1fr !important;
+                        gap: 1rem !important;
+                    }
+                    .feature-item {
+                        padding: 1rem !important;
+                    }
+                }
+                
+                @media (max-width: 480px) {
+                    .featured-section {
+                        margin-top: 2rem !important;
+                    }
+                    .section-title {
+                        font-size: 1.5rem !important;
+                    }
+                }
+            `}</style>
         </div>
     );
 };
 
 export default Home;
+

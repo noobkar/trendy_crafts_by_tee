@@ -38,25 +38,37 @@ const Shop = () => {
     });
 
     return (
-        <div style={{ paddingBottom: '4rem', paddingTop: '100px' }}>
+        <div className="shop-page" style={{ paddingBottom: '3rem', paddingTop: '80px' }}>
             <Navbar />
 
             <div className="container">
-                <div className="flex-between" style={{ marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
-                    <h1 style={{ fontSize: '2.5rem', margin: 0 }}>Shop All</h1>
+                <div className="shop-header flex-between" style={{ marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
+                    <h1 className="shop-title" style={{ margin: 0 }}>Shop All</h1>
 
-                    <div className="filter-tabs" style={{ display: 'flex', gap: '1rem', overflowX: 'auto', paddingBottom: '0.5rem' }}>
+                    <div className="filter-tabs" style={{
+                        display: 'flex',
+                        gap: '0.75rem',
+                        overflowX: 'auto',
+                        paddingBottom: '0.5rem',
+                        WebkitOverflowScrolling: 'touch',
+                        scrollbarWidth: 'none',
+                        msOverflowStyle: 'none'
+                    }}>
                         {categories.map(cat => (
                             <button
                                 key={cat}
                                 onClick={() => setFilter(cat)}
+                                className="filter-btn"
                                 style={{
-                                    padding: '8px 24px',
+                                    padding: '10px 20px',
                                     borderRadius: '50px',
                                     backgroundColor: filter === cat ? 'var(--color-primary)' : 'transparent',
                                     color: filter === cat ? 'white' : 'var(--color-text-main)',
                                     border: `1px solid ${filter === cat ? 'var(--color-primary)' : '#ddd'}`,
-                                    transition: 'all 0.3s ease'
+                                    transition: 'all 0.3s ease',
+                                    whiteSpace: 'nowrap',
+                                    minHeight: '44px',
+                                    flexShrink: 0
                                 }}
                             >
                                 {cat}
@@ -71,8 +83,46 @@ const Shop = () => {
                     ))}
                 </div>
             </div>
+
+            {/* Mobile Responsive Styles */}
+            <style>{`
+                .filter-tabs::-webkit-scrollbar {
+                    display: none;
+                }
+                
+                @media (max-width: 768px) {
+                    .shop-page {
+                        padding-top: 70px !important;
+                    }
+                    .shop-header {
+                        flex-direction: column !important;
+                        align-items: flex-start !important;
+                    }
+                    .shop-title {
+                        font-size: 1.75rem !important;
+                    }
+                    .filter-tabs {
+                        width: 100%;
+                        padding-left: 0.25rem;
+                    }
+                    .filter-btn {
+                        padding: 8px 16px !important;
+                        font-size: 0.9rem;
+                    }
+                }
+                
+                @media (max-width: 480px) {
+                    .shop-page {
+                        padding-top: 60px !important;
+                    }
+                    .shop-title {
+                        font-size: 1.5rem !important;
+                    }
+                }
+            `}</style>
         </div>
     );
 };
 
 export default Shop;
+
